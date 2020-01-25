@@ -24,48 +24,48 @@
 
     {
       "type": "file",
-      "source": "../certificates-new/ca/ca.pem",
+      "source": "../certificates/ca/ca.pem",
       "destination": "/var/lib/kubernetes/ca.pem"
     },
     {
       "type": "file",
-      "source": "../certificates-new/ca/ca-key.pem",
+      "source": "../certificates/ca/ca-key.pem",
       "destination": "/var/lib/kubernetes/ca-key.pem"
     },
     {
       "type": "file",
-      "source": "../certificates-new/kubernetes/kubernetes.pem",
+      "source": "../certificates/kubernetes/kubernetes.pem",
       "destination": "/var/lib/kubernetes/kubernetes.pem"
     },
     {
       "type": "file",
-      "source": "../certificates-new/kubernetes/kubernetes-key.pem",
+      "source": "../certificates/kubernetes/kubernetes-key.pem",
       "destination": "/var/lib/kubernetes/kubernetes-key.pem"
     },
     {
       "type": "file",
-      "source": "../certificates-new/service-account/service-account.pem",
+      "source": "../certificates/service-account/service-account.pem",
       "destination": "/var/lib/kubernetes/service-account.pem"
     },
     {
       "type": "file",
-      "source": "../certificates-new/service-account/service-account-key.pem",
+      "source": "../certificates/service-account/service-account-key.pem",
       "destination": "/var/lib/kubernetes/service-account-key.pem"
     },
 
     {
       "type": "file",
-      "source": "../certificates-new/kube-controller-manager/kube-controller-manager.kubeconfig",
+      "source": "../certificates/kube-controller-manager/kube-controller-manager.kubeconfig",
       "destination": "/var/lib/kubernetes/kube-controller-manager.kubeconfig"
     },
     {
       "type": "file",
-      "source": "../certificates-new/kube-scheduler/kube-scheduler.kubeconfig",
+      "source": "../certificates/kube-scheduler/kube-scheduler.kubeconfig",
       "destination": "/var/lib/kubernetes/kube-scheduler.kubeconfig"
     },
     {
       "type": "file",
-      "source": "../certificates-new/admin/admin.kubeconfig",
+      "source": "../certificates/admin/admin.kubeconfig",
       "destination": "/root/.kube/config"
     },
 

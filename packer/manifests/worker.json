@@ -22,47 +22,47 @@
     },
     {
       "type": "file",
-      "source": "../certificates-new/ca/ca.pem",
+      "source": "../certificates/ca/ca.pem",
       "destination": "/var/lib/kubernetes/ca.pem"
     },
     {
       "type": "file",
-      "source": "../certificates-new/kubernetes/kubernetes.pem",
+      "source": "../certificates/kubernetes/kubernetes.pem",
       "destination": "/var/lib/kubernetes/kubernetes.pem"
     },
     {
       "type": "file",
-      "source": "../certificates-new/kubernetes/kubernetes-key.pem",
+      "source": "../certificates/kubernetes/kubernetes-key.pem",
       "destination": "/var/lib/kubernetes/kubernetes-key.pem"
     },
     {
       "type": "file",
-      "source": "../certificates-new/kubelet/kubelet.pem",
+      "source": "../certificates/kubelet/kubelet.pem",
       "destination": "/var/lib/kubernetes/kubelet.pem"
     },
     {
       "type": "file",
-      "source": "../certificates-new/kubelet/kubelet-key.pem",
+      "source": "../certificates/kubelet/kubelet-key.pem",
       "destination": "/var/lib/kubernetes/kubelet-key.pem"
     },
     {
       "type": "file",
-      "source": "../certificates-new/kubelet/kubelet.kubeconfig",
+      "source": "../certificates/kubelet/kubelet.kubeconfig",
       "destination": "/var/lib/kubernetes/kubelet.kubeconfig"
     },
     {
       "type": "file",
-      "source": "../certificates-new/kube-proxy/kube-proxy.kubeconfig",
+      "source": "../certificates/kube-proxy/kube-proxy.kubeconfig",
       "destination": "/var/lib/kubernetes/kube-proxy.kubeconfig"
     },
     {
       "type": "file",
-      "source": "../certificates-new/calico/calico.kubeconfig",
+      "source": "../certificates/calico/calico.kubeconfig",
       "destination": "/var/lib/kubernetes/calico.kubeconfig"
     },
     {
       "type": "file",
-      "source": "../certificates-new/admin/admin.kubeconfig",
+      "source": "../certificates/admin/admin.kubeconfig",
       "destination": "/root/.kube/config"
     },
     {
