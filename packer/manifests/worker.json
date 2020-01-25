@@ -1,0 +1,84 @@
+{
+  "builders": [
+    {
+      "type": "hcloud",
+      "image": "ubuntu-18.04",
+      "ssh_username": "root",
+      "location": "{{user `location`}}",
+      "server_type": "{{user `server_type`}}",
+      "snapshot_name": "worker-{{timestamp}}",
+      "snapshot_labels": {
+        "application": "k8s_worker"
+      }
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "mkdir -p /var/lib/kubernetes",
+        "mkdir -p /root/.kube"
+      ]
+    },
+    {
+      "type": "file",
+      "source": "../certificates-new/ca/ca.pem",
+      "destination": "/var/lib/kubernetes/ca.pem"
+    },
+    {
+      "type": "file",
+      "source": "../certificates-new/kubernetes/kubernetes.pem",
+      "destination": "/var/lib/kubernetes/kubernetes.pem"
+    },
+    {
+      "type": "file",
+      "source": "../certificates-new/kubernetes/kubernetes-key.pem",
+      "destination": "/var/lib/kubernetes/kubernetes-key.pem"
+    },
+    {
+      "type": "file",
+      "source": "../certificates-new/kubelet/kubelet.pem",
+      "destination": "/var/lib/kubernetes/kubelet.pem"
+    },
+    {
+      "type": "file",
+      "source": "../certificates-new/kubelet/kubelet-key.pem",
+      "destination": "/var/lib/kubernetes/kubelet-key.pem"
+    },
+    {
+      "type": "file",
+      "source": "../certificates-new/kubelet/kubelet.kubeconfig",
+      "destination": "/var/lib/kubernetes/kubelet.kubeconfig"
+    },
+    {
+      "type": "file",
+      "source": "../certificates-new/kube-proxy/kube-proxy.kubeconfig",
+      "destination": "/var/lib/kubernetes/kube-proxy.kubeconfig"
+    },
+    {
+      "type": "file",
+      "source": "../certificates-new/calico/calico.kubeconfig",
+      "destination": "/var/lib/kubernetes/calico.kubeconfig"
+    },
+    {
+      "type": "file",
+      "source": "../certificates-new/admin/admin.kubeconfig",
+      "destination": "/root/.kube/config"
+    },
+    {
+      "type": "shell",
+      "skip_clean": "true",
+      "execute_command": "echo 'root' | sudo -S env {{ .Vars }} {{ .Path }}",
+      "environment_vars": [
+        "K8S_VERSION={{user `k8s_version`}}",
+        "DOCKER_VERSION={{user `docker_version`}}",
+        "CALICO_VERSION={{user `calico_version`}}"
+      ],
+      "scripts": [
+        "provisioners/worker/install-docker.sh",
+        "provisioners/worker/install-calico.sh",
+        "provisioners/worker/worker.sh"
+      ]
+    }
+  ]
+}

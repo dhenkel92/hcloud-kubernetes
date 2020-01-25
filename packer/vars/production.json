@@ -1,0 +1,8 @@
+{
+    "etcd_version": "v3.3.18",
+    "k8s_version": "v1.16.4",
+    "docker_version": "5:18.09.9~3-0~ubuntu-bionic",
+    "calico_version": "v3.11.2",
+    "server_type": "cx11",
+    "location": "nbg1"
+}

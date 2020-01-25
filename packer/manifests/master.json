@@ -1,0 +1,103 @@
+{
+  "builders": [
+    {
+      "type": "hcloud",
+      "image": "ubuntu-18.04",
+      "ssh_username": "root",
+      "location": "{{user `location`}}",
+      "server_type": "{{user `server_type`}}",
+      "snapshot_name": "master-{{timestamp}}",
+      "snapshot_labels": {
+        "application": "k8s_master"
+      }
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "mkdir -p /var/lib/kubernetes",
+        "mkdir -p /root/.kube",
+        "mkdir -p /rbac"
+      ]
+    },
+
+    {
+      "type": "file",
+      "source": "../certificates-new/ca/ca.pem",
+      "destination": "/var/lib/kubernetes/ca.pem"
+    },
+    {
+      "type": "file",
+      "source": "../certificates-new/ca/ca-key.pem",
+      "destination": "/var/lib/kubernetes/ca-key.pem"
+    },
+    {
+      "type": "file",
+      "source": "../certificates-new/kubernetes/kubernetes.pem",
+      "destination": "/var/lib/kubernetes/kubernetes.pem"
+    },
+    {
+      "type": "file",
+      "source": "../certificates-new/kubernetes/kubernetes-key.pem",
+      "destination": "/var/lib/kubernetes/kubernetes-key.pem"
+    },
+    {
+      "type": "file",
+      "source": "../certificates-new/service-account/service-account.pem",
+      "destination": "/var/lib/kubernetes/service-account.pem"
+    },
+    {
+      "type": "file",
+      "source": "../certificates-new/service-account/service-account-key.pem",
+      "destination": "/var/lib/kubernetes/service-account-key.pem"
+    },
+
+    {
+      "type": "file",
+      "source": "../certificates-new/kube-controller-manager/kube-controller-manager.kubeconfig",
+      "destination": "/var/lib/kubernetes/kube-controller-manager.kubeconfig"
+    },
+    {
+      "type": "file",
+      "source": "../certificates-new/kube-scheduler/kube-scheduler.kubeconfig",
+      "destination": "/var/lib/kubernetes/kube-scheduler.kubeconfig"
+    },
+    {
+      "type": "file",
+      "source": "../certificates-new/admin/admin.kubeconfig",
+      "destination": "/root/.kube/config"
+    },
+
+    {
+      "type": "file",
+      "source": "./files/kubelet-rbac.yaml",
+      "destination": "/rbac/kubelet-rbac.yaml"
+    },
+    {
+      "type": "file",
+      "source": "./files/calico-controller.yaml",
+      "destination": "/rbac/calico-controller.yaml"
+    },
+    {
+      "type": "file",
+      "source": "./files/coredns.yaml",
+      "destination": "/rbac/coredns.yaml"
+    },
+
+    {
+      "type": "shell",
+      "skip_clean": "true",
+      "execute_command": "echo 'root' | sudo -S env {{ .Vars }} {{ .Path }}",
+      "environment_vars": [
+        "ETCD_VERSION={{user `etcd_version`}}",
+        "K8S_VERSION={{user `k8s_version`}}"
+      ],
+      "scripts": [
+        "provisioners/master/etcd.sh",
+        "provisioners/master/master.sh",
+        "provisioners/master/ufw.sh"
+      ]
+    }
+  ]
+}
