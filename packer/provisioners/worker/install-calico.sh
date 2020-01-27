@@ -61,7 +61,7 @@ ExecStart=/usr/bin/docker run --net=host --privileged \
  -e IP=\${CALICO_IP} \
  -e CALICO_NETWORKING_BACKEND=\${CALICO_NETWORKING_BACKEND} \
  -e AS=\${CALICO_AS} \
- -e CALICO_IPV4POOL_CIDR=10.0.2.0/24 \
+ -e CALICO_IPV4POOL_CIDR=10.0.3.0/24 \
  -e CALICO_IPV4POOL_IPIP=CrossSubnet \
  -e CALICO_IPV4POOL_NAT_OUTGOING=true \
  -e CALICO_LIBNETWORK_ENABLED=true \
@@ -100,9 +100,13 @@ cat >/etc/cni/net.d/10-calico.conf <<EOF
     "etcd_key_file": "/var/lib/kubernetes/kubernetes-key.pem",
     "etcd_cert_file": "/var/lib/kubernetes/kubernetes.pem",
     "etcd_ca_cert_file": "/var/lib/kubernetes/ca.pem",
+    "log_level": "DEBUG",
     "ipam": {
         "type": "calico-ipam",
-        "ipv4_pools": ["10.0.2.0/24"]
+        "ipv4_pools": ["10.0.3.0/24"]
+    },
+    "container_settings": {
+        "allow_ip_forwarding": true
     },
     "policy": {
         "type": "k8s"

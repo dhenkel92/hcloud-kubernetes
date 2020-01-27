@@ -18,6 +18,11 @@ echo "10.0.2.119 worker-9" >> /etc/hosts
 sleep 15
 systemctl daemon-reload
 
+systemctl enable systemd-resolved
+systemctl start systemd-resolved
+
+sleep 5
+
 systemctl enable calico
 systemctl start calico
 

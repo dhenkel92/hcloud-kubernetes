@@ -2,7 +2,7 @@
   "builders": [
     {
       "type": "hcloud",
-      "image": "ubuntu-18.04",
+      "image": "{{user `base_image`}}",
       "ssh_username": "root",
       "location": "{{user `location`}}",
       "server_type": "{{user `server_type`}}",
