@@ -7,7 +7,7 @@ echo "Using K8s Version: $K8S_VERSION"
 # General setup
 apt-get update
 apt-get dist-upgrade -y
-apt-get install -y socat conntrack ipset
+apt-get install -y socat conntrack ipset tcpdump
 
 # Setup executables
 wget https://storage.googleapis.com/kubernetes-release/release/$K8S_VERSION/bin/linux/amd64/kubelet -O /usr/bin/kubelet
@@ -31,9 +31,9 @@ authorization:
   mode: Webhook
 clusterDomain: "cluster.local"
 clusterDNS:
-  - "10.0.3.10"
+  - "192.168.0.10"
 resolvConf: "/run/systemd/resolve/resolv.conf"
-podCIDR: "10.0.3.0/24"
+podCIDR: "192.168.0.0/24"
 runtimeRequestTimeout: "15m"
 tlsCertFile: "/var/lib/kubernetes/kubelet.pem"
 tlsPrivateKeyFile: "/var/lib/kubernetes/kubelet-key.pem"
@@ -77,9 +77,8 @@ Documentation=https://github.com/GoogleCloudPlatform/kubernetes
 
 [Service]
 ExecStart=/usr/bin/kube-proxy \
-  --master=https://10.0.1.50:6443 \
   --kubeconfig=/var/lib/kubernetes/kube-proxy.kubeconfig \
-  --cluster-cidr=10.0.3.0/24 \
+  --cluster-cidr=192.168.0.0/24 \
   --proxy-mode=iptables \
   --v=2
 

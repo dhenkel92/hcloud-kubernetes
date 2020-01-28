@@ -3,7 +3,7 @@
 set -x
 
 # Enable firewall
-ufw enable
+# ufw enable
 
 # General setup
 echo "10.0.2.110 worker-0" >> /etc/hosts
@@ -46,10 +46,10 @@ systemctl start kube-apiserver kube-controller-manager kube-scheduler
 # Waiting for apiserver to get ready
 status=1
 while [ $status -eq 1 ]; do
-	jaha=$(kubectl get componentstatuses)
-	status=$?
 	echo "Apiserver not ready yet. Waiting..."
 	sleep 10
+	jaha=$(kubectl get componentstatuses)
+	status=$?
 done
 
 echo "Apiserver should be ready now! :)"

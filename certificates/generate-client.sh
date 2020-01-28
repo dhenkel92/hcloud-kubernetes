@@ -5,6 +5,7 @@ set -ex
 NAME=$1
 CN=$2
 O=$3
+MASTER_IP=$4
 
 mkdir -p ./$NAME
 cd ./$NAME
@@ -33,7 +34,7 @@ cat <<EOF > $NAME-csr.json
         "10.0.2.113",
         "10.0.2.114",
 
-        "10.0.3.1",
+        "192.168.0.1",
         "10.0.2.1",
         "10.0.1.1",
         
@@ -69,7 +70,7 @@ cfssl gencert \
 kubectl config set-cluster kubernetes-the-hard-way \
     --certificate-authority=../ca/ca.pem \
     --embed-certs=true \
-    --server=https://${KUBERNETES_PUBLIC_ADDRESS}:6443 \
+    --server=https://${MASTER_IP}:6443 \
     --kubeconfig=$NAME.kubeconfig
 
 kubectl config set-credentials $CN \

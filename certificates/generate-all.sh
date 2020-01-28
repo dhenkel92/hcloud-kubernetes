@@ -11,11 +11,11 @@ case $yn in
     [Yy]* ) ./generate-ca.sh;;
 esac
 
-./generate-client.sh admin admin system:masters
-./generate-client.sh kubelet system:node system:nodes
-./generate-client.sh kube-controller-manager system:kube-controller-manager system:kube-controller-manager
-./generate-client.sh kube-proxy system:kube-proxy system:node-proxier
-./generate-client.sh kube-scheduler system:kube-scheduler system:kube-scheduler
-./generate-client.sh service-account service-accounts Kubernetes
-./generate-client.sh calico calico-node calico-node
-./generate-client.sh kubernetes kubernetes Kubernetes
+./generate-client.sh admin admin system:masters $KUBERNETES_PUBLIC_ADDRESS
+./generate-client.sh kubelet system:node system:nodes $KUBERNETES_PUBLIC_ADDRESS
+./generate-client.sh kube-controller-manager system:kube-controller-manager system:kube-controller-manager 127.0.0.1
+./generate-client.sh kube-proxy system:kube-proxy system:node-proxier $KUBERNETES_PUBLIC_ADDRESS
+./generate-client.sh kube-scheduler system:kube-scheduler system:kube-scheduler 127.0.0.1
+./generate-client.sh service-account service-accounts Kubernetes $KUBERNETES_PUBLIC_ADDRESS
+./generate-client.sh calico calico-node calico-node $KUBERNETES_PUBLIC_ADDRESS
+./generate-client.sh kubernetes kubernetes Kubernetes $KUBERNETES_PUBLIC_ADDRESS
