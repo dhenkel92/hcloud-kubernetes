@@ -94,6 +94,7 @@
         "K8S_VERSION={{user `k8s_version`}}"
       ],
       "scripts": [
+        "provisioners/common/packages.sh",
         "provisioners/master/etcd.sh",
         "provisioners/master/master.sh",
         "provisioners/master/ufw.sh"

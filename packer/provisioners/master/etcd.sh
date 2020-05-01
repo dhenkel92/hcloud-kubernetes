@@ -46,3 +46,5 @@ EOF
 
 echo "ETCDCTL_ENDPOINTS=https://127.0.0.1:2379" >> /etc/environment
 echo "ETCDCTL_CA_FILE=/var/lib/kubernetes/ca.pem" >> /etc/environment
+echo "ETCDCTL_CERT=/var/lib/kubernetes/kubernetes.pem" >> /etc/environment
+echo "ETCDCTL_KEY=/var/lib/kubernetes/kubernetes-key.pem" >> /etc/environment

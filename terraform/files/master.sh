@@ -42,13 +42,12 @@ systemctl daemon-reload
 systemctl enable kube-apiserver kube-controller-manager kube-scheduler
 systemctl start kube-apiserver kube-controller-manager kube-scheduler
 
-
 # Waiting for apiserver to get ready
 status=1
 while [ $status -eq 1 ]; do
 	echo "Apiserver not ready yet. Waiting..."
 	sleep 10
-	jaha=$(kubectl get componentstatuses)
+	jaha=$(kubectl --kubeconfig /root/.kube/config get componentstatuses)
 	status=$?
 done
 
@@ -57,19 +56,19 @@ echo "Apiserver should be ready now! :)"
 # Apply RBAC roles
 
 # https://github.com/kubernetes/kops/issues/3551#issuecomment-345154859
-kubectl set subject clusterrolebinding system:node --group=system:nodes
+kubectl --kubeconfig /root/.kube/config set subject clusterrolebinding system:node --group=system:nodes
 # ApiServer to Kubelet permissions
-kubectl apply -f /rbac/kubelet-rbac.yaml
+kubectl --kubeconfig /root/.kube/config apply -f /rbac/kubelet-rbac.yaml
 
 # Some calico permission
-kubectl create -n kube-system serviceaccount calico-kube-controllers | true
-kubectl apply -f https://docs.projectcalico.org/v3.11/manifests/rbac/rbac-etcd-calico.yaml
-kubectl set subject clusterrolebinding calico-node --group=calico-node
+kubectl --kubeconfig /root/.kube/config create -n kube-system serviceaccount calico-kube-controllers | true
+kubectl --kubeconfig /root/.kube/config apply -f https://docs.projectcalico.org/v3.11/manifests/rbac/rbac-etcd-calico.yaml
+kubectl --kubeconfig /root/.kube/config set subject clusterrolebinding calico-node --group=calico-node
 
 # Calico controller
 cd /var/lib/kubernetes
-kubectl create -n kube-system secret generic calico-etcd-certs --from-file=./ca.pem --from-file=./kubernetes.pem --from-file=./kubernetes-key.pem | true
-kubectl apply -f /rbac/calico-controller.yaml
+kubectl --kubeconfig /root/.kube/config create -n kube-system secret generic calico-etcd-certs --from-file=./ca.pem --from-file=./kubernetes.pem --from-file=./kubernetes-key.pem | true
+kubectl --kubeconfig /root/.kube/config apply -f /rbac/calico-controller.yaml
 
 # Coredns
-kubectl apply -f /rbac/coredns.yaml
+kubectl --kubeconfig /root/.kube/config apply -f /rbac/coredns.yaml

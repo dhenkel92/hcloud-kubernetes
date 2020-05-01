@@ -75,6 +75,7 @@
         "CALICO_VERSION={{user `calico_version`}}"
       ],
       "scripts": [
+        "provisioners/common/packages.sh",
         "provisioners/worker/install-docker.sh",
         "provisioners/worker/install-calico.sh",
         "provisioners/worker/worker.sh"

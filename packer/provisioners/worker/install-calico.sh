@@ -2,6 +2,9 @@
 
 set -ex
 
+# https://github.com/projectcalico/calico/issues/2322
+update-alternatives --set iptables /usr/sbin/iptables-legacy
+
 # General stuff
 sudo mkdir -p \
   /etc/calico \
