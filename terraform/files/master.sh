@@ -3,7 +3,19 @@
 set -x
 
 # Enable firewall
-# ufw enable
+ufw default deny
+ufw allow from any to any port 22
+ufw allow from ${network_cidr} to any port 2379
+ufw allow from ${network_cidr} to any port 2380
+
+ufw allow from any to any port 6443
+ufw allow from ${network_cidr} to any port 10251
+ufw allow from ${network_cidr} to any port 10252
+ufw allow from ${network_cidr} to any port 8080
+ufw allow from ${network_cidr} to any port 10257
+ufw allow from ${network_cidr} to any port 10259
+
+ufw enable
 
 # General setup
 echo "10.0.2.110 worker-0" >> /etc/hosts

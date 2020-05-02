@@ -23,6 +23,7 @@ module "master_nodes" {
     ip_prefix = var.ip_prefixes.master
 
     user_data = templatefile("${path.module}/../../files/master.sh", {
+      network_cidr = var.network_cidr
       pod_ip_cidr = var.pod_ip_cidr,
       dns_ip = var.dns_ip,
     })

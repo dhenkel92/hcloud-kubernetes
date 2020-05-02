@@ -27,6 +27,7 @@ module "server" {
 
   pod_ip_cidr = var.pod_ip_cidr
   dns_ip = var.dns_ip
+  network_cidr = var.ip_range
 }
 
 module "fips" {

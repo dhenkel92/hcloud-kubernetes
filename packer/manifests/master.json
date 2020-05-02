@@ -96,8 +96,7 @@
       "scripts": [
         "provisioners/common/packages.sh",
         "provisioners/master/etcd.sh",
-        "provisioners/master/master.sh",
-        "provisioners/master/ufw.sh"
+        "provisioners/master/master.sh"
       ]
     }
   ]
