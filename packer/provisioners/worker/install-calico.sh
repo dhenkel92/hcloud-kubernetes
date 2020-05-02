@@ -64,7 +64,7 @@ ExecStart=/usr/bin/docker run --net=host --privileged \
  -e IP=\${CALICO_IP} \
  -e CALICO_NETWORKING_BACKEND=\${CALICO_NETWORKING_BACKEND} \
  -e AS=\${CALICO_AS} \
- -e CALICO_IPV4POOL_CIDR=192.168.0.0/24 \
+ -e CALICO_IPV4POOL_CIDR=\${CLUSTER_CIDR_RANGE} \
  -e CALICO_IPV4POOL_IPIP=Always \
  -e CALICO_IPV4POOL_NAT_OUTGOING=true \
  -e CALICO_LIBNETWORK_ENABLED=true \
@@ -93,7 +93,7 @@ StartLimitInterval=60s
 WantedBy=multi-user.target
 EOF
 
-cat >/etc/cni/net.d/10-calico.conf <<EOF
+cat <<EOF > /etc/cni/net.d/10-calico.conf 
 {
     "name": "calico-k8s-network",
     "cniVersion": "0.3.1",
@@ -106,7 +106,7 @@ cat >/etc/cni/net.d/10-calico.conf <<EOF
     "log_level": "DEBUG",
     "ipam": {
         "type": "calico-ipam",
-        "ipv4_pools": ["192.168.0.0/24"]
+        "ipv4_pools": ["CLUSTER_CIDR_RANGE"]
     },
     "container_settings": {
         "allow_ip_forwarding": true

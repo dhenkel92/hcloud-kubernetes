@@ -19,3 +19,7 @@ variable "node_count" {
 
 variable "ip_prefixes" {
 }
+
+variable "pod_ip_cidr" {}
+
+variable "dns_ip" {}

@@ -23,9 +23,10 @@ Description=Kubernetes API Server
 Documentation=https://github.com/GoogleCloudPlatform/kubernetes
 
 [Service]
+EnvironmentFile=/var/lib/kubernetes/k8s.env
 ExecStart=/usr/bin/kube-apiserver \
   --enable-admission-plugins=NamespaceLifecycle,NodeRestriction,LimitRanger,ServiceAccount,DefaultStorageClass,ResourceQuota \
-  --advertise-address=INTERNAL_IP \
+  --advertise-address=\${INTERNAL_IP} \
   --allow-privileged=true \
   --apiserver-count=3 \
   --authorization-mode=Node,RBAC \
@@ -41,7 +42,7 @@ ExecStart=/usr/bin/kube-apiserver \
   --kubelet-https=true \
   --runtime-config api/all=true \
   --service-account-key-file=/var/lib/kubernetes/service-account.pem \
-  --service-cluster-ip-range=192.168.0.0/24 \
+  --service-cluster-ip-range=\${CLUSTER_CIDR_RANGE} \
   --service-node-port-range=30000-32767 \
   --tls-cert-file=/var/lib/kubernetes/kubernetes.pem \
   --tls-private-key-file=/var/lib/kubernetes/kubernetes-key.pem \
@@ -54,15 +55,16 @@ WantedBy=multi-user.target
 EOF
 
 # Setup kube controller manager
-cat <<EOF | sudo tee /etc/systemd/system/kube-controller-manager.service
+cat <<EOF > /etc/systemd/system/kube-controller-manager.service
 [Unit]
 Description=Kubernetes Controller Manager
 Documentation=https://github.com/GoogleCloudPlatform/kubernetes
 
 [Service]
+EnvironmentFile=/var/lib/kubernetes/k8s.env
 ExecStart=/usr/bin/kube-controller-manager \
   --allocate-node-cidrs=false \
-  --cluster-cidr=192.168.0.0/24 \
+  --cluster-cidr=\${CLUSTER_CIDR_RANGE} \
   --cluster-name=kubernetes \
   --cluster-signing-cert-file=/var/lib/kubernetes/ca.pem \
   --cluster-signing-key-file=/var/lib/kubernetes/ca-key.pem \
@@ -70,7 +72,7 @@ ExecStart=/usr/bin/kube-controller-manager \
   --leader-elect=true \
   --root-ca-file=/var/lib/kubernetes/ca.pem \
   --service-account-private-key-file=/var/lib/kubernetes/service-account-key.pem \
-  --service-cluster-ip-range=192.168.0.0/24 \
+  --service-cluster-ip-range=\${SERVICE_CLUSTER_CIDR_RANGE} \
   --use-service-account-credentials=true \
   --v=2
 Restart=on-failure

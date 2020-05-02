@@ -17,29 +17,29 @@ echo "10.0.2.117 worker-7" >> /etc/hosts
 echo "10.0.2.118 worker-8" >> /etc/hosts
 echo "10.0.2.119 worker-9" >> /etc/hosts
 
-# Setup etcd service
 sleep 10
 
+# Replace POD IP CIDR configuration
 ETCD_NAME=$(hostname -s)
 INTERNAL_IP=$(ifconfig ens10 | grep 'inet ' | awk '{print $2}')
 
-sed -i s/ETCD_NAME/$ETCD_NAME/g /etc/systemd/system/etcd.service
-sed -i s/INTERNAL_IP/$INTERNAL_IP/g /etc/systemd/system/etcd.service
+echo "INTERNAL_IP=$INTERNAL_IP" >> /var/lib/kubernetes/k8s.env
+echo "CLUSTER_CIDR_RANGE=${pod_ip_cidr}" >> /var/lib/kubernetes/k8s.env
+echo "SERVICE_CLUSTER_CIDR_RANGE=${pod_ip_cidr}" >> /var/lib/kubernetes/k8s.env
+
+mkdir -p /etc/etcd
+echo "ETCD_NAME=$ETCD_NAME" >> /etc/etcd/etcd.env
+echo "INTERNAL_IP=$INTERNAL_IP" >> /etc/etcd/etcd.env
+
+sed -i s,DNS_IP_PLACEHOLDER,${dns_ip},g /rbac/coredns.yaml
 
 systemctl daemon-reload
-systemctl enable etcd
+systemctl enable etcd kube-apiserver kube-controller-manager kube-scheduler
+
 systemctl start etcd
 
-# Setup etcd service
 sleep 30
 
-INTERNAL_IP=$(ifconfig ens10 | grep 'inet ' | awk '{print $2}')
-sed -i s/INTERNAL_IP/$INTERNAL_IP/g /etc/systemd/system/kube-apiserver.service
-sed -i s/INTERNAL_IP/$INTERNAL_IP/g /etc/systemd/system/kube-controller-manager.service
-sed -i s/INTERNAL_IP/$INTERNAL_IP/g /etc/systemd/system/kube-scheduler.service
-
-systemctl daemon-reload
-systemctl enable kube-apiserver kube-controller-manager kube-scheduler
 systemctl start kube-apiserver kube-controller-manager kube-scheduler
 
 # Waiting for apiserver to get ready

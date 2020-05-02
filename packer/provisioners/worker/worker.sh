@@ -30,10 +30,7 @@ authentication:
 authorization:
   mode: Webhook
 clusterDomain: "cluster.local"
-clusterDNS:
-  - "192.168.0.10"
 resolvConf: "/run/systemd/resolve/resolv.conf"
-podCIDR: "192.168.0.0/24"
 runtimeRequestTimeout: "15m"
 tlsCertFile: "/var/lib/kubernetes/kubelet.pem"
 tlsPrivateKeyFile: "/var/lib/kubernetes/kubelet-key.pem"
@@ -47,7 +44,7 @@ After=docker.service
 Requires=docker.service
 
 [Service]
-
+EnvironmentFile=/var/lib/kubernetes/k8s.env
 ExecStart=/usr/bin/kubelet \
     --container-runtime=docker \
     --image-pull-progress-deadline=2m \
@@ -58,6 +55,8 @@ ExecStart=/usr/bin/kubelet \
     --cni-bin-dir=/opt/cni/bin \
     --register-node=true \
     --cloud-provider= \
+    --cluster-dns=\${K8S_DNS_IP} \
+    --pod-cidr=\${CLUSTER_CIDR_RANGE} \
     --v=2
 
 Restart=on-failure
@@ -76,9 +75,10 @@ Description=Kubernetes Kube Proxy
 Documentation=https://github.com/GoogleCloudPlatform/kubernetes
 
 [Service]
+EnvironmentFile=/var/lib/kubernetes/k8s.env
 ExecStart=/usr/bin/kube-proxy \
   --kubeconfig=/var/lib/kubernetes/kube-proxy.kubeconfig \
-  --cluster-cidr=192.168.0.0/24 \
+  --cluster-cidr=\${CLUSTER_CIDR_RANGE} \
   --proxy-mode=iptables \
   --v=2
 

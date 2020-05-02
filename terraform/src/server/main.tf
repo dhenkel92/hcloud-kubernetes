@@ -22,7 +22,10 @@ module "master_nodes" {
     node_count = var.node_count.master
     ip_prefix = var.ip_prefixes.master
 
-    user_data = file("${path.module}/../../files/master.sh")
+    user_data = templatefile("${path.module}/../../files/master.sh", {
+      pod_ip_cidr = var.pod_ip_cidr,
+      dns_ip = var.dns_ip,
+    })
 }
 
 module "worker_nodes" {
@@ -39,5 +42,8 @@ module "worker_nodes" {
     node_count = var.node_count.worker
     ip_prefix = var.ip_prefixes.worker
 
-    user_data = file("${path.module}/../../files/worker.sh")
+    user_data = templatefile("${path.module}/../../files/worker.sh", {
+      pod_ip_cidr = var.pod_ip_cidr,
+      dns_ip = var.dns_ip,
+    })
 }

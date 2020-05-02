@@ -31,3 +31,6 @@ ip_prefixes = {
     master = "10.0.1.5"
     worker = "10.0.2.11"
 }
+
+pod_ip_cidr = "192.168.0.0/24"
+dns_ip = "192.168.0.10"

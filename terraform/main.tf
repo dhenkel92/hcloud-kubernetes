@@ -24,6 +24,9 @@ module "server" {
   node_type= var.node_type
   node_count = var.node_count
   ip_prefixes = var.ip_prefixes
+
+  pod_ip_cidr = var.pod_ip_cidr
+  dns_ip = var.dns_ip
 }
 
 module "fips" {

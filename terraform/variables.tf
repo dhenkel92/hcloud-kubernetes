@@ -18,17 +18,21 @@ variable "location" {
 
 variable "node_type" {
   default = {
-      master = "cx11"
-      worker = "cx11"
+    master = "cx11"
+    worker = "cx11"
   }
 }
 
 variable "node_count" {
   default = {
-      master = 3
-      worker = 3
+    master = 3
+    worker = 3
   }
 }
 
 variable "ip_prefixes" {
 }
+
+variable "pod_ip_cidr" {}
+
+variable "dns_ip" {}

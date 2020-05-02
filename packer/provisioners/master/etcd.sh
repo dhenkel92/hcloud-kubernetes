@@ -22,17 +22,18 @@ Description=etcd
 Documentation=https://github.com/coreos
 
 [Service]
-ExecStart=/usr/bin/etcd --name ETCD_NAME \
+EnvironmentFile=/etc/etcd/etcd.env
+ExecStart=/usr/bin/etcd \
   --cert-file=/var/lib/kubernetes/kubernetes.pem \
   --key-file=/var/lib/kubernetes/kubernetes-key.pem \
   --peer-cert-file=/var/lib/kubernetes/kubernetes.pem \
   --peer-key-file=/var/lib/kubernetes/kubernetes-key.pem \
   --trusted-ca-file=/var/lib/kubernetes/ca.pem \
   --peer-trusted-ca-file=/var/lib/kubernetes/ca.pem \
-  --initial-advertise-peer-urls https://INTERNAL_IP:2380 \
-  --listen-peer-urls https://INTERNAL_IP:2380 \
-  --listen-client-urls https://INTERNAL_IP:2379,https://127.0.0.1:2379 \
-  --advertise-client-urls https://INTERNAL_IP:2379 \
+  --initial-advertise-peer-urls https://\${INTERNAL_IP}:2380 \
+  --listen-peer-urls https://\${INTERNAL_IP}:2380 \
+  --listen-client-urls https://\${INTERNAL_IP}:2379,https://127.0.0.1:2379 \
+  --advertise-client-urls https://\${INTERNAL_IP}:2379 \
   --initial-cluster-token etcd-cluster-0 \
   --initial-cluster master-0=https://10.0.1.50:2380,master-1=https://10.0.1.51:2380,master-2=https://10.0.1.52:2380 \
   --initial-cluster-state new \
